@@ -1,0 +1,20 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          spotify:
+            client-id:
+            client-secret:
+            authorization-grant-type: authorization_code
+            redirect-uri: http://localhost:8080/login/oauth2/code/spotify
+            scope:
+              - user-read-currently-playing
+        provider:
+          spotify:
+            authorization-uri: https://accounts.spotify.com/authorize?
+            token-uri: https://accounts.spotify.com/api/token
+            user-info-uri: https://api.spotify.com/v1/me
+            user-name-attribute: display_name
+
+
