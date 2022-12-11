@@ -1,5 +1,6 @@
 package com.demus.controller;
 
+import com.demus.model.httpResponse.ControllerResponse;
 import com.demus.model.httpResponse.CurrentlyPlayingControllerResponse;
 import com.demus.model.httpResponseEntity.CurrentlyPlaying;
 import com.demus.service.SpotifyRequestService;
@@ -50,6 +51,24 @@ public class HomeController {
             controllerResponse.buildControllerError();
         }
         return controllerResponse;
+    }
+
+    @RequestMapping(value = "addToQueue", method = RequestMethod.GET)
+    public ControllerResponse addToQueue(@RequestParam("uri") String uri, OAuth2AuthenticationToken oAuth2AuthenticationToken) {
+        ControllerResponse controllerResponse = new ControllerResponse();
+         try {
+             OAuth2AuthorizedClient authorizedClient = this.authorizedClientService.loadAuthorizedClient("spotify", oAuth2AuthenticationToken.getName());
+             String token = authorizedClient.getAccessToken().getTokenValue();
+             ResponseEntity<String> response = spotifyRequestService.fetch(token, "/v1/me/player/queue?uri=" + uri, HttpMethod.POST);
+             if (!response.hasBody() && response.getStatusCode().is2xxSuccessful()) {
+                 controllerResponse.buildResponse(true, 204, "Track is added to queue.");
+             } else {
+                 controllerResponse.buildResponse(false, response.getStatusCode().value(), "Track is not added to queue.");
+             }
+         } catch (Exception ex) {
+            controllerResponse.buildControllerError();
+         }
+         return controllerResponse;
     }
 
 }

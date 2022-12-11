@@ -10,6 +10,7 @@ spring:
             redirect-uri: http://localhost:8080/login/oauth2/code/spotify
             scope:
               - user-read-currently-playing
+              - user-modify-playback-state
         provider:
           spotify:
             authorization-uri: https://accounts.spotify.com/authorize?

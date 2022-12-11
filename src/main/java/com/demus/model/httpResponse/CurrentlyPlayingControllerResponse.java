@@ -15,12 +15,12 @@ public class CurrentlyPlayingControllerResponse extends ControllerResponse {
 
     public void notListeningCurently() {
         this.setMessage("Not listening right now.");
-        this.setStatusCode("204");
+        this.setStatusCode(204);
         this.setSuccess(true);
     }
     public void currentlyListening() {
         this.setMessage("Listening Right now.");
-        this.setStatusCode("200");
+        this.setStatusCode(200);
         this.setSuccess(true);
     }
 }

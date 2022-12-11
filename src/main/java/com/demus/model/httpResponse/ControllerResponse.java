@@ -2,7 +2,7 @@ package com.demus.model.httpResponse;
 
 public class ControllerResponse {
     private boolean isSuccess;
-    private String StatusCode;
+    private Integer StatusCode;
     private String message;
 
     public boolean isSuccess() {
@@ -13,11 +13,11 @@ public class ControllerResponse {
         isSuccess = success;
     }
 
-    public String getStatusCode() {
+    public Integer getStatusCode() {
         return StatusCode;
     }
 
-    public void setStatusCode(String statusCode) {
+    public void setStatusCode(Integer statusCode) {
         StatusCode = statusCode;
     }
 
@@ -29,15 +29,21 @@ public class ControllerResponse {
         this.message = message;
     }
 
+    public void buildResponse(boolean isSuccess, Integer statusCode, String message) {
+        this.isSuccess = isSuccess;
+        StatusCode = statusCode;
+        this.message = message;
+    }
+
     public void buildControllerError() {
         this.message = "Internal Controller Error";
         this.isSuccess = false;
-        this.StatusCode = "101";
+        this.StatusCode = 500;
     }
 
     public void buildServiceError() {
         this.message = "Internal Service Error";
         this.isSuccess = false;
-        this.StatusCode = "100";
+        this.StatusCode = 500;
     }
 }
