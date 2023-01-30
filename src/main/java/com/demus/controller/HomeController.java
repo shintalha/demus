@@ -7,8 +7,10 @@ import com.demus.service.SpotifyRequestService;
 import com.nimbusds.jose.shaded.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
+import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,13 +25,17 @@ public class HomeController {
     @Autowired
     private SpotifyRequestService spotifyRequestService;
 
-
     @GetMapping
     public Map<String, Object> getToken(OAuth2AuthenticationToken oAuth2AuthenticationToken) {
         return oAuth2AuthenticationToken.getPrincipal().getAttributes();
     }
 
-    @GetMapping("currently-playing")
+    @GetMapping("api/deneme")
+    public String index(@RegisteredOAuth2AuthorizedClient("spotify") OAuth2AuthorizedClient authorizedClient) {
+        return authorizedClient.getAccessToken().getTokenValue();
+    }
+
+    @GetMapping("api/currently-playing")
     public CurrentlyPlayingControllerResponse getCurrentlyPlaying(OAuth2AuthenticationToken oAuth2AuthenticationToken) {
         CurrentlyPlayingControllerResponse controllerResponse = new CurrentlyPlayingControllerResponse();
         try {
@@ -53,7 +59,7 @@ public class HomeController {
         return controllerResponse;
     }
 
-    @RequestMapping(value = "addToQueue", method = RequestMethod.GET)
+    @RequestMapping(value = "api/addToQueue", method = RequestMethod.GET)
     public ControllerResponse addToQueue(@RequestParam("uri") String uri, OAuth2AuthenticationToken oAuth2AuthenticationToken) {
         ControllerResponse controllerResponse = new ControllerResponse();
          try {
@@ -70,5 +76,7 @@ public class HomeController {
          }
          return controllerResponse;
     }
+
+
 
 }
