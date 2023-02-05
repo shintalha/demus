@@ -9,18 +9,13 @@ import java.util.ArrayList;
 @Getter
 @Setter
 @AllArgsConstructor
-public class Album{
-    private String album_type;
-    private ArrayList<Artist> artists;
-    private ArrayList<String> available_markets;
+public class SpotifyUser {
+    private String display_name;
     private ExternalUrls external_urls;
+    private Followers followers;
     private String href;
     private String id;
     private ArrayList<Image> images;
-    private String name;
-    private String release_date;
-    private String release_date_precision;
-    private int total_tracks;
     private String type;
     private String uri;
 }

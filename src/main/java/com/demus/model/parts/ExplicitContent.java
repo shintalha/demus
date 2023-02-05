@@ -7,6 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class Actions{
-    private Disallows disallows;
+public class ExplicitContent {
+    private boolean filter_enabled;
+    private boolean filter_locked;
 }

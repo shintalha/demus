@@ -7,6 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class Actions{
-    private Disallows disallows;
+public class Followers {
+    private String href;
+    private Integer total;
 }

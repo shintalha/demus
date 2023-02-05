@@ -1,17 +1,12 @@
 package com.demus.model.parts;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
 public class ExternalUrls{
     private String spotify;
-
-    public ExternalUrls(String spotify) {
-        this.spotify = spotify;
-    }
-
-    public String getSpotify() {
-        return spotify;
-    }
-
-    public void setSpotify(String spotify) {
-        this.spotify = spotify;
-    }
 }
