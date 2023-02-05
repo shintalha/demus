@@ -16,6 +16,7 @@ import java.util.List;
 public class Voting implements Serializable {
     @Id
     private int votingId;
+    private String ownerOfVoting;
 
     private String track1Id;
     private Integer votesOfTrack1;

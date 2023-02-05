@@ -10,13 +10,11 @@ import org.springframework.data.redis.core.TimeToLive;
 @Getter
 @Setter
 @AllArgsConstructor
-@RedisHash("UserToken")
-public class ClientToken {
+@RedisHash("Session")
+public class Session {
     @Id
-    private String id;
-    private String accessToken;
-    private String accessTokenExpiresAt;
-    private String refreshToken;
+    private String uuid;
+    private String spotifyId;
 
     @TimeToLive
     private Long expiration;

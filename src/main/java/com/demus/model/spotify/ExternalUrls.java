@@ -1,4 +1,4 @@
-package com.demus.model.parts;
+package com.demus.model.spotify;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -4,10 +4,10 @@ spring:
       client:
         registration:
           spotify:
-            client-id: ed243e77fb784c4aa7f4b62c5ca258f9
-            client-secret: fe9ecd664670429586a3805974ff06bf
+            client-id: your_client_id
+            client-secret: your_client_secret
             authorization-grant-type: authorization_code
-            redirect-uri: http://localhost:8000
+            redirect-uri: yourclient.com
             scope:
               - user-read-currently-playing
               - user-modify-playback-state

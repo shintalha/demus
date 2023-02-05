@@ -1,9 +1,9 @@
 package com.demus.repository;
 
-import com.demus.model.user.ClientToken;
+import com.demus.model.user.Session;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ClientTokenRepository extends CrudRepository<ClientToken, String> {
+public interface SessionRepository extends CrudRepository<Session, String> {
 }

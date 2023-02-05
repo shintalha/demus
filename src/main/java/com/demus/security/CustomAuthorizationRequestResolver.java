@@ -1,4 +1,4 @@
-package com.demus.config;
+package com.demus.security;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;

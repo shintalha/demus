@@ -19,4 +19,6 @@ public class User implements Serializable {
     private String id;
     private String username;
     private String imageUri;
+    private String accessToken;
+    private String refreshToken;
 }

@@ -1,8 +1,8 @@
-package com.demus.model.httpResponse;
+package com.demus.model.service;
 
 import com.demus.model.httpResponseEntity.CurrentlyPlaying;
 
-public class CurrentlyPlayingControllerResponse extends ControllerResponse {
+public class CurrentlyPlayingServiceResponse extends ServiceResponse {
     private CurrentlyPlaying currentlyPlaying;
 
     public CurrentlyPlaying getCurrentlyPlaying() {

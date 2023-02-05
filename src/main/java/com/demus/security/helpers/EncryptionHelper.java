@@ -1,4 +1,4 @@
-package com.demus.security;
+package com.demus.security.helpers;
 
 import lombok.NonNull;
 import lombok.SneakyThrows;

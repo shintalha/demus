@@ -1,80 +1,47 @@
 package com.demus.controller;
 
-import com.demus.model.httpResponse.ControllerResponse;
-import com.demus.model.httpResponse.CurrentlyPlayingControllerResponse;
-import com.demus.model.httpResponseEntity.CurrentlyPlaying;
-import com.demus.service.SpotifyRequestService;
-import com.nimbusds.jose.shaded.gson.Gson;
+import com.demus.model.controller.ControllerResponse;
+import com.demus.model.controller.CurrentlyPlayingControllerResponse;
+import com.demus.model.service.CurrentlyPlayingServiceResponse;
+import com.demus.model.service.ServiceResponse;
+import com.demus.model.user.User;
+import com.demus.service.AddToQueueService;
+import com.demus.service.GetCurrentlyPlayingService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
-import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 @RestController
 @RequestMapping("/")
 public class HomeController {
     @Autowired
-    private OAuth2AuthorizedClientService authorizedClientService;
-
+    private GetCurrentlyPlayingService getCurrentlyPlayingService;
     @Autowired
-    private SpotifyRequestService spotifyRequestService;
+    private AddToQueueService addToQueueService;
 
-    @GetMapping
-    public Map<String, Object> getToken(OAuth2AuthenticationToken oAuth2AuthenticationToken) {
-        return oAuth2AuthenticationToken.getPrincipal().getAttributes();
-    }
-
-    @GetMapping("api/deneme")
-    public String index(@RegisteredOAuth2AuthorizedClient("spotify") OAuth2AuthorizedClient authorizedClient) {
-        return authorizedClient.getAccessToken().getTokenValue();
-    }
-
-    @GetMapping("api/currently-playing")
-    public CurrentlyPlayingControllerResponse getCurrentlyPlaying(OAuth2AuthenticationToken oAuth2AuthenticationToken) {
+    @GetMapping("api/get/currentlyplaying")
+    public CurrentlyPlayingControllerResponse getCurrentlyPlaying(@RequestAttribute("token") String token) {
         CurrentlyPlayingControllerResponse controllerResponse = new CurrentlyPlayingControllerResponse();
         try {
-            OAuth2AuthorizedClient authorizedClient = this.authorizedClientService.loadAuthorizedClient("spotify", oAuth2AuthenticationToken.getName());
-            String token = authorizedClient.getAccessToken().getTokenValue();
-            ResponseEntity<String> response = spotifyRequestService.fetch(token, "/v1/me/player/currently-playing", HttpMethod.GET);
-            if (response.getStatusCode().is1xxInformational()) {
-                controllerResponse.buildServiceError();
-                return controllerResponse;
-            }
-            if (response.hasBody()) {
-                CurrentlyPlaying currentlyPlaying = new Gson().fromJson(response.getBody(), CurrentlyPlaying.class);
-                controllerResponse.setCurrentlyPlaying(currentlyPlaying);
-                controllerResponse.currentlyListening();
-            } else {
-                controllerResponse.notListeningCurently();
-            }
+            CurrentlyPlayingServiceResponse serviceResponse = getCurrentlyPlayingService.getCurrentlyPlaying(token);
+            if (serviceResponse.isSuccess())
+                controllerResponse.setCurrentlyPlaying(serviceResponse.getCurrentlyPlaying());
+            controllerResponse.buildResponse(serviceResponse);
         } catch (Exception ex) {
-            controllerResponse.buildControllerError();
+            controllerResponse.buildControllerError(ex);
         }
         return controllerResponse;
     }
 
-    @RequestMapping(value = "api/addToQueue", method = RequestMethod.GET)
-    public ControllerResponse addToQueue(@RequestParam("uri") String uri, OAuth2AuthenticationToken oAuth2AuthenticationToken) {
+    @GetMapping(value = "api/addtoqueue")
+    public ControllerResponse addToQueue(@RequestAttribute("token") String token, String uri) {
         ControllerResponse controllerResponse = new ControllerResponse();
-         try {
-             OAuth2AuthorizedClient authorizedClient = this.authorizedClientService.loadAuthorizedClient("spotify", oAuth2AuthenticationToken.getName());
-             String token = authorizedClient.getAccessToken().getTokenValue();
-             ResponseEntity<String> response = spotifyRequestService.fetch(token, "/v1/me/player/queue?uri=" + uri, HttpMethod.POST);
-             if (!response.hasBody() && response.getStatusCode().is2xxSuccessful()) {
-                 controllerResponse.buildResponse(true, 204, "Track is added to queue.");
-             } else {
-                 controllerResponse.buildResponse(false, response.getStatusCode().value(), "Track is not added to queue.");
-             }
-         } catch (Exception ex) {
-            controllerResponse.buildControllerError();
-         }
-         return controllerResponse;
+        try {
+            ServiceResponse serviceResponse = addToQueueService.addToQueue(token, uri);
+            controllerResponse.buildResponse(serviceResponse);
+        } catch (Exception ex) {
+            controllerResponse.buildControllerError(ex);
+        }
+        return controllerResponse;
     }
 
 

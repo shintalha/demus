@@ -1,7 +1,7 @@
-package com.demus.repository;
+package com.demus.security;
 
-import com.demus.security.CookieHelper;
-import com.demus.security.EncryptionHelper;
+import com.demus.security.helpers.CookieHelper;
+import com.demus.security.helpers.EncryptionHelper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpHeaders;
@@ -15,16 +15,16 @@ import javax.crypto.SecretKey;
 import java.time.Duration;
 import java.util.Base64;
 
+import static com.demus.constants.ConstantParameter.OAUTH_COOKIE_NAME;
+
 @Component
 public class CustomStatelessAuthorizationRequestRepository implements AuthorizationRequestRepository<OAuth2AuthorizationRequest> {
 
-    private static final Duration OAUTH_COOKIE_EXPIRY = Duration.ofMinutes(5);
+
     private static final Base64.Encoder B64E = Base64.getEncoder();
     private static final Base64.Decoder B64D = Base64.getDecoder();
 
-
-    public static final String OAUTH_COOKIE_NAME = "OAUTH";
-
+    private static final Duration OAUTH_COOKIE_EXPIRY = Duration.ofMinutes(5);
     private final SecretKey encryptionKey;
 
     public CustomStatelessAuthorizationRequestRepository() {

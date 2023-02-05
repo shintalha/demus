@@ -1,8 +1,8 @@
 package com.demus.model.httpResponseEntity;
 
-import com.demus.model.parts.Actions;
-import com.demus.model.parts.Context;
-import com.demus.model.parts.Item;
+import com.demus.model.spotify.Actions;
+import com.demus.model.spotify.Context;
+import com.demus.model.spotify.Item;
 
 public class CurrentlyPlaying {
     private long timestamp;

@@ -1,4 +1,4 @@
-package com.demus.security;
+package com.demus.security.helpers;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.tomcat.util.http.Rfc6265CookieProcessor;

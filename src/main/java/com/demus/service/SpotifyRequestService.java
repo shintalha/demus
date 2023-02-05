@@ -9,11 +9,10 @@ import org.springframework.web.client.RestTemplate;
 
 @Service
 public class SpotifyRequestService {
-    @Autowired
-    RestTemplate restTemplate;
 
     public ResponseEntity<String> fetch(String token, String url, HttpMethod httpMethod) {
         ResponseEntity<String> response = null;
+        RestTemplate restTemplate = new RestTemplate();
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.add("Authorization", "Bearer " + token);
