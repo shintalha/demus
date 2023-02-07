@@ -4,7 +4,7 @@ import com.demus.security.CustomAuthorizationHandler;
 import com.demus.security.CustomAuthorizationRedirectFilter;
 import com.demus.security.CustomAuthorizationRequestResolver;
 import com.demus.security.CustomStatelessAuthorizationRequestRepository;
-import com.demus.service.CustomAuthorizedClientService;
+import com.demus.security.CustomAuthorizedClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

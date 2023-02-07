@@ -11,19 +11,19 @@ public class ControllerResponse {
     private Integer StatusCode;
     private String message;
 
-    public void buildResponse(boolean isSuccess, Integer statusCode, String message) {
+    public void constructResponse(boolean isSuccess, Integer statusCode, String message) {
         this.isSuccess = isSuccess;
         StatusCode = statusCode;
         this.message = message;
     }
 
-    public void buildResponse(ServiceResponse serviceResponse) {
+    public void constructResponse(ServiceResponse serviceResponse) {
         this.isSuccess = serviceResponse.isSuccess();
         StatusCode = serviceResponse.getStatusCode();
-        this.message = serviceResponse.getMessage();
+        this.message = "Service message: " + serviceResponse.getMessage();
     }
 
-    public void buildControllerError(Exception exception) {
+    public void constructControllerError(Exception exception) {
         this.message = "Internal Controller Error: " + exception.getMessage().toString();
         this.isSuccess = false;
         this.StatusCode = 500;

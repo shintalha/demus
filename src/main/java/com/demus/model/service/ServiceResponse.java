@@ -31,8 +31,14 @@ public class ServiceResponse {
         this.StatusCode = 500;
     }
 
+    public void constructErrorResponse(String message, Integer statusCode) {
+        this.message = message;
+        this.isSuccess = false;
+        this.StatusCode = statusCode;
+    }
+
     public void constructErrorResponse(Integer statusCode) {
-        this.message = "Error from Spotify";
+        this.message = "Error from Spotify: ";
         this.isSuccess = false;
         this.StatusCode = statusCode;
     }

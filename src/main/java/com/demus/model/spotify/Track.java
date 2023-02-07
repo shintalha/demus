@@ -9,7 +9,7 @@ import java.util.ArrayList;
 @Getter
 @Setter
 @AllArgsConstructor
-public class Item {
+public class Track {
     private Album album;
     private ArrayList<Artist> artists;
     private ArrayList<String> available_markets;

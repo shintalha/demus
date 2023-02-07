@@ -1,4 +1,4 @@
-package com.demus.service;
+package com.demus.security;
 
 import com.demus.model.user.User;
 import com.demus.repository.UserRepository;

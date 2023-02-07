@@ -9,5 +9,7 @@ public class ConstantParameter {
     public static final String CURRENTLY_PLAYING_ROUTE = "/v1/me/player/currently-playing";
 
     public static final String ADD_TO_QUEUE_ROUTE = "/v1/me/player/queue?uri=";
+    public static final String GET_PLAYLISTS_ROUTE = "/v1/me/playlists";
+    public static final String GET_PLAYLIST_TRACKS_ROUTE = "/v1/playlists/playlist_id/tracks";
 
 }

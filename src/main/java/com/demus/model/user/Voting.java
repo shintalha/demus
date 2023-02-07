@@ -15,24 +15,38 @@ import java.util.List;
 @Setter
 public class Voting implements Serializable {
     @Id
-    private int votingId;
+    private String votingId;
     private String ownerOfVoting;
+    private Integer votingNumber;
+    private String musicPool;
 
-    private String track1Id;
-    private Integer votesOfTrack1;
+    private String track1_Id;
+    private String track1_Artist;
+    private String track1_Name;
+    private String track1_image;
+    private Integer track1_Votes;
 
-    private String track2Id;
-    private Integer votesOfTrack2;
+    private String track2_Id;
+    private String track2_Artist;
+    private String track2_Name;
+    private String track2_image;
+    private Integer track2_Votes;
 
-    private String track3Id;
-    private Integer votesOfTrack3;
+    private String track3_Id;
+    private String track3_Artist;
+    private String track3_Name;
+    private String track3_image;
+    private Integer track3_Votes;
 
-    private String track4Id;
-    private Integer votesOfTrack4;
+    private String track4_Id;
+    private String track4_Artist;
+    private String track4_Name;
+    private String track4_image;
+    private Integer track4_Votes;
 
-    private String track5Id;
-    private Integer votesOfTrack5;
-
-    @TimeToLive
-    private Long expiration;
+    private String track5_Id;
+    private String track5_Artist;
+    private String track5_Name;
+    private String track5_image;
+    private Integer track5_Votes;
 }
