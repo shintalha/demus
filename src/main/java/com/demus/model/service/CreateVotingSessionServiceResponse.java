@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class CreateVotingServiceResponse extends ServiceResponse {
+public class CreateVotingSessionServiceResponse extends ServiceResponse {
     private String votingId;
     private String ownerOfVoting;
 }

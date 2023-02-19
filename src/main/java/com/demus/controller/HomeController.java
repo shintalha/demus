@@ -25,8 +25,6 @@ public class HomeController {
     private AddToQueueService addToQueueService;
     @Autowired
     private GetUsersPlaylistsService getUsersPlaylistsService;
-    @Autowired
-    private GetPlaylistTracksService getPlaylistTracksService;
 
     @GetMapping("api/get/currentlyplaying")
     public CurrentlyPlayingControllerResponse getCurrentlyPlaying(@RequestAttribute("token") String token) {
