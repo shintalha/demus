@@ -2,17 +2,13 @@ package com.demus.controller;
 
 import com.demus.model.controller.ControllerResponse;
 import com.demus.model.controller.CurrentlyPlayingControllerResponse;
-import com.demus.model.controller.GetPlaylistTracksControllerResponse;
 import com.demus.model.controller.GetUsersPlaylistsControllerResponse;
 import com.demus.model.service.CurrentlyPlayingServiceResponse;
-import com.demus.model.service.GetPlaylistTracksServiceResponse;
 import com.demus.model.service.GetUsersPlaylistsServiceResponse;
 import com.demus.model.service.ServiceResponse;
-import com.demus.model.user.User;
 import com.demus.service.AddToQueueService;
 import com.demus.service.GetCurrentlyPlayingService;
-import com.demus.service.GetPlaylistTracksService;
-import com.demus.service.GetUsersPlaylistsService;
+import com.demus.service.GetPlaylistsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +20,7 @@ public class HomeController {
     @Autowired
     private AddToQueueService addToQueueService;
     @Autowired
-    private GetUsersPlaylistsService getUsersPlaylistsService;
+    private GetPlaylistsService getPlaylistsService;
 
     @GetMapping("api/get/currentlyplaying")
     public CurrentlyPlayingControllerResponse getCurrentlyPlaying(@RequestAttribute("token") String token) {
@@ -56,7 +52,7 @@ public class HomeController {
     public GetUsersPlaylistsControllerResponse getUserPlaylists(@RequestAttribute("token") String token) {
         GetUsersPlaylistsControllerResponse controllerResponse = new GetUsersPlaylistsControllerResponse();
         try {
-            GetUsersPlaylistsServiceResponse serviceResponse = getUsersPlaylistsService.getUsersPlaylists(token);
+            GetUsersPlaylistsServiceResponse serviceResponse = getPlaylistsService.getUsersPlaylists(token);
             if (serviceResponse.isSuccess())
                 controllerResponse.setUsersPlaylists(serviceResponse.getUsersPlaylists());
             controllerResponse.constructResponse(serviceResponse);

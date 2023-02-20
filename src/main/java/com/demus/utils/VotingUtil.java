@@ -1,47 +1,39 @@
 package com.demus.utils;
 
-import com.demus.model.httpResponseEntity.PlaylistTracks;
-import com.demus.model.spotify.PlaylistItem;
+import com.demus.model.spotify.Track;
 import com.demus.model.user.Voting;
-import org.springframework.stereotype.Service;
+import com.demus.model.user.VotingTrack;
+import com.nimbusds.jose.shaded.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-@Service
 public class VotingUtil {
-    public Voting buildVoting(List<Integer> selectedTracks, PlaylistTracks playlistTracks, Voting voting) {
-        ArrayList<PlaylistItem> playlistItems = playlistTracks.getItems();
-        voting.setTrack1_Id(playlistItems.get(selectedTracks.get(0)).getTrack().getId());
-        voting.setTrack1_Artist(playlistItems.get(selectedTracks.get(0)).getTrack().getArtists().get(0).getName());
-        voting.setTrack1_Name(playlistItems.get(selectedTracks.get(0)).getTrack().getName());
-        voting.setTrack1_image(playlistItems.get(selectedTracks.get(0)).getTrack().getAlbum().getImages().get(0).getUrl());
-        voting.setTrack1_Votes(0);
+    public static Set<Integer> getRandomNumber(int total) {
+        Set<Integer> numbers = new Random().ints(0, total)
+                .distinct()
+                .limit(5)
+                .boxed()
+                .collect(Collectors.toSet());
+        return numbers;
+    }
 
-        voting.setTrack2_Id(playlistItems.get(selectedTracks.get(1)).getTrack().getId());
-        voting.setTrack2_Artist(playlistItems.get(selectedTracks.get(1)).getTrack().getArtists().get(0).getName());
-        voting.setTrack2_Name(playlistItems.get(selectedTracks.get(1)).getTrack().getName());
-        voting.setTrack2_image(playlistItems.get(selectedTracks.get(1)).getTrack().getAlbum().getImages().get(0).getUrl());
-        voting.setTrack2_Votes(0);
-
-        voting.setTrack3_Id(playlistItems.get(selectedTracks.get(2)).getTrack().getId());
-        voting.setTrack3_Artist(playlistItems.get(selectedTracks.get(2)).getTrack().getArtists().get(0).getName());
-        voting.setTrack3_Name(playlistItems.get(selectedTracks.get(2)).getTrack().getName());
-        voting.setTrack3_image(playlistItems.get(selectedTracks.get(2)).getTrack().getAlbum().getImages().get(0).getUrl());
-        voting.setTrack3_Votes(0);
-
-        voting.setTrack4_Id(playlistItems.get(selectedTracks.get(3)).getTrack().getId());
-        voting.setTrack4_Artist(playlistItems.get(selectedTracks.get(3)).getTrack().getArtists().get(0).getName());
-        voting.setTrack4_Name(playlistItems.get(selectedTracks.get(3)).getTrack().getName());
-        voting.setTrack4_image(playlistItems.get(selectedTracks.get(3)).getTrack().getAlbum().getImages().get(0).getUrl());
-        voting.setTrack4_Votes(0);
-
-        voting.setTrack5_Id(playlistItems.get(selectedTracks.get(4)).getTrack().getId());
-        voting.setTrack5_Artist(playlistItems.get(selectedTracks.get(4)).getTrack().getArtists().get(0).getName());
-        voting.setTrack5_Name(playlistItems.get(selectedTracks.get(4)).getTrack().getName());
-        voting.setTrack5_image(playlistItems.get(selectedTracks.get(4)).getTrack().getAlbum().getImages().get(0).getUrl());
-        voting.setTrack5_Votes(0);
-
+    public static Voting buildVoting(Set<Track> tracks, Voting voting) {
+        List<VotingTrack> votingTracks = new ArrayList<>();
+        for (Track track : tracks) {
+            VotingTrack votingTrack = new VotingTrack();
+            votingTrack.setVotes(0);
+            votingTrack.setId(track.getId());
+            votingTrack.setName(track.getName());
+            votingTrack.setArtist(track.getArtists().get(0).getName());
+            votingTrack.setImage(track.getAlbum().getImages().get(0).getUrl());
+            votingTracks.add(votingTrack);
+        }
+        String serializedVoting = new Gson().toJson(votingTracks);
+        voting.setVotingInfo(serializedVoting);
         return voting;
     }
 }

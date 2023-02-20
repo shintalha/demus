@@ -1,9 +1,15 @@
 package com.demus.service;
 
 import com.demus.model.httpResponseEntity.PlaylistTracks;
+import com.demus.model.service.GetPlaylistByIdServiceResponse;
+import com.demus.model.service.GetPlaylistTracksServiceResponse;
+import com.demus.model.service.GetUsersPlaylistsServiceResponse;
 import com.demus.model.service.ServiceResponse;
 import com.demus.model.spotify.PlaylistItem;
+import com.demus.model.spotify.Track;
 import com.demus.model.user.Voting;
+import com.demus.model.user.VotingTrack;
+import com.demus.repository.UserRepository;
 import com.demus.repository.VotingRepository;
 import com.demus.repository.VotingSessionRepository;
 import com.demus.utils.VotingUtil;
@@ -12,10 +18,9 @@ import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import com.demus.utils.VotingUtil;
+
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,29 +30,25 @@ public class NextVotingService {
     @Autowired
     VotingRepository votingRepository;
     @Autowired
-    VotingUtil votingUtil;
+    UserRepository userRepository;
+    @Autowired
+    GetPlaylistsService getPlaylistsService;
+    @Autowired
+    GetPlaylistTracksService getPlaylistTracksService;
 
     @SneakyThrows
-    public  ServiceResponse nextVoting(String votingId) {
+    public ServiceResponse nextVoting(String votingId) {
         ServiceResponse serviceResponse = new ServiceResponse();
         Voting voting = votingRepository.findById(votingId).orElseThrow();
-        String musicPool = voting.getMusicPool();
-        PlaylistTracks playlistTracks = new Gson().fromJson(musicPool, PlaylistTracks.class);
-        List<Integer> randomlySelectedNumbers = getRandomNumbers(playlistTracks.getTotal());
-        Voting nextVoting = votingUtil.buildVoting(randomlySelectedNumbers, playlistTracks, voting);
+        String accessToken = userRepository.findById(voting.getOwnerOfVoting()).get().getAccessToken();
+        GetPlaylistByIdServiceResponse getPlaylistByIdServiceResponse = getPlaylistsService.getPlaylistById(voting.getPlaylistId(), accessToken);
+        Set<Integer> randomlySelectedTrackOffsets = VotingUtil.getRandomNumber(getPlaylistByIdServiceResponse.getPlaylist().getTotal());
+        GetPlaylistTracksServiceResponse getPlaylistTracksServiceResponse = getPlaylistTracksService.getPlaylistTracksByOffsets(accessToken, voting.getPlaylistId(), randomlySelectedTrackOffsets);
+        Voting nextVoting = VotingUtil.buildVoting(getPlaylistTracksServiceResponse.getTracks(), voting);
         nextVoting.setVotingNumber(voting.getVotingNumber() + 1);
         votingRepository.save(nextVoting);
         serviceResponse.constructSuccessResponse(200);
         return serviceResponse;
-    }
-
-    private List<Integer> getRandomNumbers(int total) {
-        List<Integer> numbers = new Random().ints(0, total)
-                .distinct()
-                .limit(5)
-                .boxed()
-                .collect(Collectors.toList());
-        return numbers;
     }
 
 }

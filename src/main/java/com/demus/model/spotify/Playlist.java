@@ -14,5 +14,6 @@ import java.util.ArrayList;
 public class Playlist {
     private String id;
     private String name;
+    private Integer total;
     private ArrayList<Image> images;
 }
